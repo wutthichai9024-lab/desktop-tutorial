@@ -373,8 +373,21 @@
   .footer .bank-account { color: var(--cream); font-size: 0.8rem; }
   .footer .footer-note { color: var(--muted); font-size: 0.72rem; margin-top: 14px; }
 </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bill Splitter">
 </head>
 <body>
+    <div class="container">
+    <input type="number" id="totalAmount" placeholder="ยอดรวมทั้งหมด (บาท)">
+    <input type="number" id="people" placeholder="จำนวนคนหาร">
+    <button onclick="calculate()">คำนวณเงิน</button>
+    
+    <div id="result-box" style="margin-top: 20px; font-size: 1.5rem; color: #ffeb3b;">
+        <span id="resultText">รอคำนวณ...</span>
+    </div>
+</div>
 
 <!-- HEADER -->
 <div class="header">
@@ -530,6 +543,21 @@
     addFriend();
     addFriend();
   };
+function calculate() {
+    // ดึงค่าจากช่องที่ผู้ใช้กรอก
+    const total = document.getElementById('totalAmount').value;
+    const people = document.getElementById('people').value;
+    const resultDisplay = document.getElementById('resultText');
+
+    // ตรวจสอบว่ากรอกตัวเลขหรือไม่
+    if (total > 0 && people > 0) {
+        const share = total / people;
+        // แสดงผลลัพธ์เป็นทศนิยม 2 ตำแหน่ง
+        resultDisplay.innerText = "จ่ายคนละ: " + share.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " บาท";
+    } else {
+        alert("กรุณากรอกยอดเงินและจำนวนคนให้ถูกต้องนะครับ");
+    }
+}
 </script>
 </body>
 </html>
