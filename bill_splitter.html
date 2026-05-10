@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>หารค่าอาหารเครื่องดื่ม By TAO WUTTICHAI KY</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&family=Bebas+Neue&display=swap');
+
+  :root {
+    --bg: #0d0a06;
+    --surface: #1a1208;
+    --card: #221a0e;
+    --amber: #d4872a;
+    --amber-light: #f0a83c;
+    --cream: #f2e6c8;
+    --muted: #8a7560;
+    --border: #3a2e1e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Kanit', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 60px;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(212,135,42,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(212,135,42,0.05) 0%, transparent 50%);
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(180deg, #1a1208 0%, #0d0a06 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 20px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--amber), var(--amber-light), var(--amber), transparent);
+  }
+  .header::after {
+    content: '🍺🍻🥃🍷🍸🍹🥂🍺🍻🥃';
+    position: absolute;
+    bottom: -8px; left: 0; right: 0;
+    font-size: 1.4rem;
+    letter-spacing: 6px;
+    opacity: 0.12;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .header-emoji-row {
+    font-size: 2rem;
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(212,135,42,0.5));
+  }
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 6px;
+    color: var(--amber-light);
+    text-shadow: 0 0 30px rgba(212,135,42,0.5), 0 2px 4px rgba(0,0,0,0.5);
+    line-height: 1;
+  }
+  .header-sub {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-top: 6px;
+    letter-spacing: 2px;
+  }
+
+  /* decorative bubbles */
+  .bubbles {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+  }
+  .bubble {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+    opacity: 0.4;
+    animation: bob 2s ease-in-out infinite;
+  }
+  .bubble:nth-child(2) { animation-delay: 0.3s; opacity: 0.6; }
+  .bubble:nth-child(3) { animation-delay: 0.6s; opacity: 0.3; }
+  .bubble:nth-child(4) { animation-delay: 0.9s; opacity: 0.5; }
+  .bubble:nth-child(5) { animation-delay: 1.2s; opacity: 0.35; }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  /* ===== DRINK BANNER ===== */
+  .drink-banner {
+    background: linear-gradient(135deg, #1a1208 0%, #221a0e 50%, #1a1208 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    text-align: center;
+    font-size: 2rem;
+    letter-spacing: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+  .drink-banner span {
+    display: inline-block;
+    animation: slide 20s linear infinite;
+    white-space: nowrap;
+  }
+  @keyframes slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ===== CONTAINER ===== */
+  .container { max-width: 600px; margin: 0 auto; padding: 28px 20px; }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 2.5px;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,153,0,0.5), transparent);
+  }
+
+  label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
+
+  .currency-input {
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .currency-input:focus-within {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 2px rgba(223, 152, 65, 0.15);
+  }
+  .currency-symbol {
+    padding: 0 14px;
+    color: var(--amber);
+    font-weight: 600;
+    border-right: 1px solid var(--border);
+    background: rgba(226, 155, 68, 0.08);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+  }
+  .currency-input input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--cream);
+    font-family: 'Kanit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    padding: 10px 14px;
+  }
+  .currency-input input::placeholder { color: var(--muted); font-weight: 300; font-size: 1rem; }
+
+  .col-headers {
+    display: flex;
+    gap: 10px;
+    padding: 0 0 6px 38px;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .col-name { flex: 1.3; }
+  .col-amt { flex: 1; }
+
+  .friend-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .friend-num {
+    width: 28px; height: 28px;
+    background: rgba(212,135,42,0.12);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; color: var(--amber);
+    font-weight: 600; flex-shrink: 0;
+  }
+  .friend-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--cream);
+    font-family: 'Kanit', sans-serif;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .friend-input:focus { border-color: var(--amber); }
+  .friend-input::placeholder { color: var(--muted); font-weight: 300; }
+  .name-input { flex: 1.3; }
+  .amount-input { flex: 1; }
+
+  .delete-btn {
+    width: 32px; height: 32px;
+    background: rgba(192,57,43,0.12);
+    border: 1px solid rgba(192,57,43,0.25);
+    border-radius: 6px;
+    color: #e74c3c;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .delete-btn:hover { background: rgba(192,57,43,0.28); }
+
+  .btn-add {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed var(--amber);
+    color: var(--amber);
+    padding: 12px;
+    font-size: 0.95rem;
+    margin-top: 4px;
+    border-radius: 10px;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-add:hover { background: rgba(212,135,42,0.08); }
+
+  .btn-calculate {
+    width: 100%;
+    background: linear-gradient(135deg, var(--amber), var(--amber-light));
+    color: #0d0a06;
+    padding: 16px;
+    font-size: 1.15rem;
+    margin-bottom: 24px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(212,135,42,0.3);
+    letter-spacing: 1px;
+  }
+  .btn-calculate:hover { box-shadow: 0 6px 28px rgba(212,135,42,0.5); transform: translateY(-1px); }
+  .btn-calculate:active { transform: translateY(0); }
+
+  .error {
+    background: rgba(192,57,43,0.12);
+    border: 1px solid rgba(192,57,43,0.3);
+    border-radius: 8px;
+    color: #e74c3c;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .error.show { display: block; }
+
+  #resultCard { display: none; }
+  #resultCard.show { display: block; }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .summary-box .icon { font-size: 1.3rem; display: block; margin-bottom: 4px; }
+  .summary-box .val { font-size: 1rem; font-weight: 700; color: var(--amber-light); }
+  .summary-box .lbl { font-size: 0.68rem; color: var(--muted); margin-top: 4px; }
+
+  .result-title {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 2px;
+    font-size: 1.15rem;
+    color: var(--amber);
+    margin: 20px 0 12px;
+  }
+
+  .person-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .person-name { font-weight: 600; font-size: 1.05rem; }
+  .person-paid { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+  .person-share { font-size: 0.8rem; color: var(--muted); text-align: right; }
+  .person-diff {
+    font-size: 0.95rem; font-weight: 700;
+    padding: 5px 12px; border-radius: 6px;
+    margin-top: 4px; text-align: right;
+  }
+  .owe { color: #e74c3c; background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.25); }
+  .get { color: #2ecc71; background: rgba(39,174,96,0.12); border: 1px solid rgba(39,174,96,0.25); }
+  .even { color: var(--amber); background: rgba(212,135,42,0.1); border: 1px solid rgba(212,135,42,0.25); }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    padding: 28px 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    position: relative;
+  }
+  .footer-drinks {
+    font-size: 1.5rem;
+    letter-spacing: 6px;
+    margin-bottom: 14px;
+    opacity: 0.6;
+  }
+  .footer p { color: var(--muted); font-size: 0.75rem; line-height: 2; }
+  .footer .credit { color: var(--amber); font-size: 0.9rem; font-weight: 700; letter-spacing: 2px; }
+  .footer .bank-box {
+    display: inline-block;
+    margin-top: 10px;
+    background: #1a1208;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 20px;
+    line-height: 1.9;
+  }
+  .footer .bank-label { color: var(--muted); font-size: 0.72rem; letter-spacing: 1px; }
+  .footer .bank-name { color: #27ae60; font-size: 0.82rem; font-weight: 600; }
+  .footer .bank-num { color: var(--amber-light); font-size: 1.05rem; font-weight: 700; letter-spacing: 2px; }
+  .footer .bank-account { color: var(--cream); font-size: 0.8rem; }
+  .footer .footer-note { color: var(--muted); font-size: 0.72rem; margin-top: 14px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <span class="header-emoji-row">🍺 🍻 🥃 🍹 🥂</span>
+  <h1>BILL SPLITTER</h1>
+  <p class="header-sub">หารค่าเครื่องดื่ม · ง่าย · เร็ว · แม่นยำ · เจ็บไม่จำขอซ้ำอีกรอบ · จุ๊บๆ</p>
+  <div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+</div>
+
+<!-- SCROLLING DRINK BANNER -->
+<div class="drink-banner">
+  <span>🍺&nbsp;&nbsp;🍻&nbsp;&nbsp;🥃&nbsp;&nbsp;🍷&nbsp;&nbsp;🍸&nbsp;&nbsp;🍹&nbsp;&nbsp;🥂&nbsp;&nbsp;🍾&nbsp;&nbsp;🧉&nbsp;&nbsp;🍶&nbsp;&nbsp;🍺&nbsp;&nbsp;🍻&nbsp;&nbsp;🥃&nbsp;&nbsp;🍷&nbsp;&nbsp;🍸&nbsp;&nbsp;🍹&nbsp;&nbsp;🥂&nbsp;&nbsp;🍾&nbsp;&nbsp;🧉&nbsp;&nbsp;🍶&nbsp;&nbsp;</span>
+</div>
+
+<div class="container">
+
+  <div class="section-label">ยอดรวมทั้งหมด</div>
+  <div class="card">
+    <label>ราคาเครื่องดื่มรวม (บาท)</label>
+    <div class="currency-input">
+      <span class="currency-symbol">฿</span>
+      <input type="number" id="totalAmount" placeholder="0.00" min="0" step="0.01">
+    </div>
+  </div>
+
+  <div class="section-label">รายชื่อและยอดที่ต้องออก</div>
+  <div class="card">
+    <div class="col-headers">
+      <span class="col-name">ชื่อ</span>
+      <span class="col-amt">จ่ายไปแล้ว (฿)</span>
+    </div>
+    <div id="friendsList"></div>
+    <button class="btn-add" onclick="addFriend()">+ เพิ่มคน</button>
+  </div>
+
+  <div class="error" id="errorMsg"></div>
+
+  <button class="btn-calculate" onclick="calculate()">🧮 คำนวณ</button>
+
+  <div class="card" id="resultCard">
+    <div class="section-label" style="margin-bottom:16px">สรุปผล</div>
+    <div class="summary-grid" id="summaryGrid"></div>
+    <div class="result-title">📋 รายละเอียดแต่ละคน</div>
+    <div id="personResults"></div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-drinks">🍺 🍻 🥃 🍹</div>
+  <p>จัดทำโดย</p>
+  <p class="credit">TAO WUTTICHAI KY IG : ws.ataoxnnier</p>
+  <div class="bank-box">
+    <div class="bank-label">💚 โดเนทสนับสนุนผมได้ที่</div>
+    <div class="bank-name">ธนาคารกสิกรไทย (KBank)</div>
+    <div class="bank-num">092-807-1766</div>
+    <div class="bank-account">วุฒิชัย ครองยุทธ์</div>
+  </div>
+  <p class="footer-note">🍺 ดื่มไม่ขับ กลับกับใคร ถึงเขาจะไม่มีใจก็ยังรัก</p>
+</div>
+
+<script>
+  var count = 0;
+
+  function addFriend() {
+    count++;
+    var num = count;
+    var list = document.getElementById('friendsList');
+    var row = document.createElement('div');
+    row.className = 'friend-row';
+    row.id = 'row-' + num;
+    row.innerHTML =
+      '<div class="friend-num">' + num + '</div>' +
+      '<input class="friend-input name-input" type="text" placeholder="ชื่อ" id="name-' + num + '">' +
+      '<input class="friend-input amount-input" type="number" placeholder="0.00" min="0" step="0.01" id="amt-' + num + '">' +
+      '<button class="delete-btn" onclick="removeRow(' + num + ')">✕</button>';
+    list.appendChild(row);
+  }
+
+  function removeRow(id) {
+    var row = document.getElementById('row-' + id);
+    if (row) { row.remove(); }
+  }
+
+  function showError(msg) {
+    var el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 3000);
+  }
+
+  function fmt(n) {
+    return n.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calculate() {
+    var total = parseFloat(document.getElementById('totalAmount').value);
+    if (!total || total <= 0) { showError('กรุณากรอกยอดรวมค่าเครื่องดื่ม'); return; }
+
+    var rows = document.querySelectorAll('.friend-row');
+    if (rows.length === 0) { showError('กรุณาเพิ่มรายชื่ออย่างน้อย 1 คน'); return; }
+
+    var friends = [];
+    for (var i = 0; i < rows.length; i++) {
+      var rowEl = rows[i];
+      var id = rowEl.id.replace('row-', '');
+      var nameEl = document.getElementById('name-' + id);
+      var amtEl = document.getElementById('amt-' + id);
+      var name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'คนที่ ' + (i + 1);
+      var paid = (amtEl && amtEl.value) ? (parseFloat(amtEl.value) || 0) : 0;
+      friends.push({ name: name, paid: paid });
+    }
+
+    var per = total / friends.length;
+
+    document.getElementById('summaryGrid').innerHTML =
+      '<div class="summary-box"><span class="icon">💰</span><div class="val">฿' + fmt(total) + '</div><div class="lbl">ยอดรวม</div></div>' +
+      '<div class="summary-box"><span class="icon">👥</span><div class="val">' + friends.length + ' คน</div><div class="lbl">จำนวนคน</div></div>' +
+      '<div class="summary-box"><span class="icon">🍺</span><div class="val">฿' + fmt(per) + '</div><div class="lbl">คนละ</div></div>';
+
+    var html = '';
+    for (var j = 0; j < friends.length; j++) {
+      var f = friends[j];
+      var diff = f.paid - per;
+      var cls, txt;
+      if (Math.abs(diff) < 0.5) { cls = 'even'; txt = '✓ เท่ากันพอดี'; }
+      else if (diff < 0) { cls = 'owe'; txt = 'ต้องจ่ายเพิ่ม ฿' + fmt(Math.abs(diff)); }
+      else { cls = 'get'; txt = 'รับเงินคืน เงินที่ต้องได้เพิ่ม ฿' + fmt(diff); }
+
+      html +=
+        '<div class="person-card">' +
+          '<div><div class="person-name">🧑 ' + f.name + '</div>' +
+          '<div class="person-paid">จ่ายไปแล้ว: ฿' + fmt(f.paid) + '</div></div>' +
+          '<div><div class="person-share">ควรออก: ฿' + fmt(per) + '</div>' +
+          '<div class="person-diff ' + cls + '">' + txt + '</div></div>' +
+        '</div>';
+    }
+
+    document.getElementById('personResults').innerHTML = html;
+    var card = document.getElementById('resultCard');
+    card.classList.add('show');
+    card.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  window.onload = function() {
+    addFriend();
+    addFriend();
+  };
+</script>
+</body>
+</html>
